@@ -1,0 +1,2202 @@
+grf {
+ grfid: "\4A\44\B1\23";
+ name: string(STR_GRF_NAME);
+ desc: string(STR_GRF_DESCRIPTION);
+ version: 2;
+ min_compatible_version: 1;
+ }
+ 
+
+
+template template_smokestack(x, y) {
+	[x, y, 64, 256,  -31, -224, NOCROP]
+}
+
+template template_purchase(x, y) {
+	[x, y, 128, 256,  -31, -224, NOCROP]
+}
+
+//Ground tile spritesets
+
+spriteset(spriteset_asphaltbase, "gfx/asphaltground.png") { template_smokestack(0,0) }
+spriteset(spriteset_urbanbase, "gfx/urbanground.png") { template_smokestack(0,0) }
+spriteset(spriteset_industrybase, "gfx/industryground.png") { template_smokestack(0,0) }
+spriteset(spriteset_templebase, "gfx/templeground.png") { template_smokestack(0,0) }
+
+spriteset(spriteset_firsbase, "gfx/firsbase-8bpp.png") { template_smokestack(0,0) }
+
+//Smokestacks
+
+spriteset(spriteset_smokestack_1, "gfx/pkstack-8bpp.png") { template_smokestack(0,0) }
+spriteset(spriteset_smokestack_2, "gfx/japstack-8bpp.png") { template_smokestack(0,0) }
+spriteset(spriteset_smokestack_3, "gfx/gasstack-8bpp.png") { template_smokestack(0,0) }
+spriteset(spriteset_smokestack_4, "gfx/gasstack-b-8bpp.png") { template_smokestack(0,0) }
+
+alternative_sprites(spriteset_smokestack_1, ZOOM_LEVEL_NORMAL, BIT_DEPTH_32BPP, "gfx/pkstack-32bpp.png") {
+	template_smokestack(0,0)
+}
+alternative_sprites(spriteset_smokestack_2, ZOOM_LEVEL_NORMAL, BIT_DEPTH_32BPP, "gfx/japstack-32bpp.png") {
+	template_smokestack(0,0)
+}
+alternative_sprites(spriteset_smokestack_3, ZOOM_LEVEL_NORMAL, BIT_DEPTH_32BPP, "gfx/gasstack-32bpp.png") {
+	template_smokestack(0,0)
+}
+alternative_sprites(spriteset_smokestack_4, ZOOM_LEVEL_NORMAL, BIT_DEPTH_32BPP, "gfx/gasstack-b-32bpp.png") {
+	template_smokestack(0,0)
+}
+
+
+
+
+spritelayout layout_smokestack_1 {
+ 	ground { sprite: spriteset_industrybase; }
+
+ 	building {
+ 		sprite: spriteset_smokestack_1;
+	}
+}
+
+spritelayout layout_smokestack_2 {
+ 	ground { sprite: spriteset_industrybase; }
+
+ 	building {
+ 		sprite: spriteset_smokestack_2;
+	}
+}
+
+spritelayout layout_smokestack_3 {
+ 	ground { sprite: spriteset_industrybase; }
+
+ 	building {
+ 		sprite: spriteset_smokestack_3;
+	}
+}
+
+spritelayout layout_smokestack_4 {
+ 	ground { sprite: spriteset_industrybase; }
+
+ 	building {
+ 		sprite: spriteset_smokestack_4;
+	}
+}
+
+
+switch (FEAT_OBJECTS, SELF, switch_smokestack_variant, view) {
+    1:  layout_smokestack_1;
+    2:  layout_smokestack_2;
+    3:  layout_smokestack_3;
+    layout_smokestack_4;
+}
+
+switch (FEAT_OBJECTS, SELF, switch_smokestack_text, view) {
+    1:  string(STR_SMOKESTACK_1);
+    2:  string(STR_SMOKESTACK_3);
+    string(STR_SMOKESTACK_2);
+}
+
+
+item (FEAT_OBJECTS, smokestack_1) {
+    property {
+        class:                  "BLDG";
+        classname:              string(STR_INDUSTRIAL);
+        name:                   string(STR_SMOKESTACKS);
+        climates_available:     ALL_CLIMATES;
+        size:                   [1,1];
+        build_cost_multiplier:  8;
+        remove_cost_multiplier: 8;
+        introduction_date:      date(1950,1,1);
+        end_of_life_date:       0xFFFFFFFF;
+        object_flags:           bitmask(OBJ_FLAG_REMOVE_IS_INCOME);
+        height:                 8;
+        num_views:              4;
+    }
+    graphics {
+		default: switch_smokestack_variant;
+        additional_text:    switch_smokestack_text;
+    }
+}
+
+//Ground tiles
+
+
+
+spritelayout layout_asphaltbase {
+ 	ground { sprite: spriteset_asphaltbase; }
+
+}
+
+spritelayout layout_urbanbase {
+ 	ground { sprite: spriteset_urbanbase; }
+
+}
+
+spritelayout layout_industrybase {
+ 	ground { sprite: spriteset_industrybase; }
+
+}
+
+spritelayout layout_templebase {
+ 	ground { sprite: spriteset_templebase; }
+
+}
+
+switch (FEAT_OBJECTS, SELF, switch_groundtile_variant, view) {
+    0:  layout_asphaltbase;
+    1:  layout_urbanbase;
+    2:  layout_templebase;
+    3:  layout_industrybase;
+}
+
+switch (FEAT_OBJECTS, SELF, switch_groundtile_text, view) {
+    0:  string(STR_GROUND_ASPHALT);
+    1:  string(STR_GROUND_URBAN);
+	2:  string(STR_GROUND_TEMPLE);
+    3:  string(STR_GROUND_INDUSTRY);
+}
+
+
+item (FEAT_OBJECTS, ground_tiles) {
+    property {
+        class:                  "BLDG";
+        name:                   string(STR_GROUND);
+        climates_available:     ALL_CLIMATES;
+        size:                   [1,1];
+        build_cost_multiplier:  8;
+        remove_cost_multiplier: 8;
+        introduction_date:      0x00000000;
+        end_of_life_date:       0xFFFFFFFF;
+        object_flags:           bitmask(OBJ_FLAG_ANYTHING_REMOVE);
+        height:                 2;
+        num_views:              4;
+    }
+    graphics {
+		default: switch_groundtile_variant;
+        additional_text:    switch_groundtile_text;
+    }
+}
+
+
+//Jap Factory
+
+spriteset(spriteset_japfactory_left, "gfx/denkikojo.png") { template_smokestack(1,1) }
+spriteset(spriteset_japfactory_middle, "gfx/denkikojo.png") { template_smokestack(33,1) }
+spriteset(spriteset_japfactory_right, "gfx/denkikojo.png") { template_smokestack(65,1) }
+
+spriteset(spriteset_japfactory_purchase, "gfx/denkikojo.png") { template_purchase(1, 1) }
+
+//NEWS North East West South / blank right left middle
+
+//TODO retemplate so that it can be one image and also used as purchase sprite
+
+spritelayout layout_japfactory_1 {
+ 	ground { sprite: spriteset_firsbase; }
+
+// 	building {
+//		sprite: spriteset_smokestack_1;
+//	}
+}
+
+spritelayout layout_japfactory_2 {
+ 	ground { sprite: spriteset_firsbase; }
+
+ 	building {
+ 		sprite: spriteset_japfactory_right;
+		zoffset: -15;
+		zextent: 32;
+	}
+}
+
+spritelayout layout_japfactory_3 {
+ 	ground { sprite: spriteset_firsbase; }
+
+ 	building {
+ 		sprite: spriteset_japfactory_left;
+		zoffset: -15; 
+		zextent: 32;
+	}
+}
+
+spritelayout layout_japfactory_4 {
+ 	ground { sprite: spriteset_firsbase; }
+
+ 	building {
+ 		sprite: spriteset_japfactory_middle;
+		zoffset: 1;
+	}
+}
+
+spritelayout layout_japfactory_purchase {
+	ground {
+        sprite: GROUNDSPRITE_NORMAL;
+	}
+	building {
+		sprite: spriteset_japfactory_purchase;
+		xoffset: 0; //from NE edge
+        yoffset: -16; //from NW edge
+        zoffset: -16;
+        xextent: 16;
+        yextent: 16;
+        zextent: 16;
+	}
+}
+
+
+switch (FEAT_OBJECTS, SELF, switch_japfactory_position, relative_pos) {
+	relative_coord(0, 0): layout_japfactory_1;
+	relative_coord(0, 1): layout_japfactory_2;
+	relative_coord(1, 0): layout_japfactory_3;
+	relative_coord(1, 1): layout_japfactory_4;
+    layout_japfactory_1;
+    }
+
+
+//Big Shop
+
+spriteset(spriteset_bigshop_left, "gfx/bigshop.png") { template_smokestack(1,1) }
+spriteset(spriteset_bigshop_middle, "gfx/bigshop.png") { template_smokestack(33,1) }
+spriteset(spriteset_bigshop_right, "gfx/bigshop.png") { template_smokestack(65,1) }
+
+spriteset(spriteset_bigshop_purchase, "gfx/bigshop.png") { template_purchase(1, 1) }
+
+//NEWS North East West South / blank right left middle
+
+//TODO retemplate so that it can be one image and also used as purchase sprite
+
+spritelayout layout_bigshop_1 {
+ 	ground { sprite: spriteset_urbanbase; }
+
+// 	building {
+//		sprite: spriteset_smokestack_1;
+//	}
+}
+
+spritelayout layout_bigshop_2 {
+ 	ground { sprite: spriteset_urbanbase; }
+
+ 	building {
+ 		sprite: spriteset_bigshop_right;
+		zoffset: -15;
+		zextent: 32;
+	}
+}
+
+spritelayout layout_bigshop_3 {
+ 	ground { sprite: spriteset_urbanbase; }
+
+ 	building {
+ 		sprite: spriteset_bigshop_left;
+		zoffset: -15; 
+		zextent: 32;
+	}
+}
+
+spritelayout layout_bigshop_4 {
+ 	ground { sprite: spriteset_urbanbase; }
+
+ 	building {
+ 		sprite: spriteset_bigshop_middle;
+		zoffset: 1;
+	}
+}
+
+spritelayout layout_bigshop_purchase {
+	ground {
+        sprite: GROUNDSPRITE_NORMAL;
+	}
+	building {
+		sprite: spriteset_bigshop_purchase;
+		xoffset: 0; //from NE edge
+        yoffset: -16; //from NW edge
+        zoffset: -16;
+        xextent: 16;
+        yextent: 16;
+        zextent: 16;
+	}
+}
+
+
+
+switch (FEAT_OBJECTS, SELF, switch_bigshop_position, relative_pos) {
+	relative_coord(0, 0): layout_bigshop_1;
+	relative_coord(0, 1): layout_bigshop_2;
+	relative_coord(1, 0): layout_bigshop_3;
+	relative_coord(1, 1): layout_bigshop_4;
+    layout_bigshop_1;
+    }
+	
+
+//Stadium
+
+spriteset(spriteset_stadium_left, "gfx/stadium.png") { template_smokestack(1,1) }
+spriteset(spriteset_stadium_middle, "gfx/stadium.png") { template_smokestack(33,1) }
+spriteset(spriteset_stadium_right, "gfx/stadium.png") { template_smokestack(65,1) }
+
+spriteset(spriteset_stadium_purchase, "gfx/stadium.png") { template_purchase(1, 1) }
+
+//NEWS North East West South / blank right left middle
+
+//TODO retemplate so that it can be one image and also used as purchase sprite
+
+spritelayout layout_stadium_1 {
+ 	ground { sprite: spriteset_urbanbase; }
+
+// 	building {
+//		sprite: spriteset_smokestack_1;
+//	}
+}
+
+spritelayout layout_stadium_2 {
+ 	ground { sprite: spriteset_urbanbase; }
+
+ 	building {
+ 		sprite: spriteset_stadium_right;
+		zoffset: -15;
+		zextent: 32;
+	}
+}
+
+spritelayout layout_stadium_3 {
+ 	ground { sprite: spriteset_urbanbase; }
+
+ 	building {
+ 		sprite: spriteset_stadium_left;
+		zoffset: -15; 
+		zextent: 32;
+	}
+}
+
+spritelayout layout_stadium_4 {
+ 	ground { sprite: spriteset_urbanbase; }
+
+ 	building {
+ 		sprite: spriteset_stadium_middle;
+		zoffset: 1;
+	}
+}
+
+
+spritelayout layout_stadium_purchase {
+	ground {
+        sprite: GROUNDSPRITE_NORMAL;
+	}
+	building {
+		sprite: spriteset_stadium_purchase;
+		xoffset: 0; //from NE edge
+        yoffset: -16; //from NW edge
+        zoffset: -16;
+        xextent: 16;
+        yextent: 16;
+        zextent: 16;
+	}
+}
+
+
+switch (FEAT_OBJECTS, SELF, switch_stadium_position, relative_pos) {
+	relative_coord(0, 0): layout_stadium_1;
+	relative_coord(0, 1): layout_stadium_2;
+	relative_coord(1, 0): layout_stadium_3;
+	relative_coord(1, 1): layout_stadium_4;
+    layout_stadium_1;
+    }
+	
+	
+//Tower
+
+spriteset(spriteset_tower_left, "gfx/tower.png") { template_smokestack(1,1) }
+spriteset(spriteset_tower_middle, "gfx/tower.png") { template_smokestack(33,1) }
+spriteset(spriteset_tower_right, "gfx/tower.png") { template_smokestack(65,1) }
+
+spriteset(spriteset_tower_purchase, "gfx/tower.png") { template_purchase(1, 1) }
+
+spritelayout layout_tower_1 {
+ 	ground { sprite: spriteset_firsbase; }
+
+// 	building {
+//		sprite: spriteset_smokestack_1;
+//	}
+}
+
+spritelayout layout_tower_2 {
+ 	ground { sprite: spriteset_firsbase; }
+
+ 	building {
+ 		sprite: spriteset_tower_right;
+		zoffset: -15;
+		zextent: 32;
+	}
+}
+
+spritelayout layout_tower_3 {
+ 	ground { sprite: spriteset_firsbase; }
+
+ 	building {
+ 		sprite: spriteset_tower_left;
+		zoffset: -15; 
+		zextent: 32;
+	}
+}
+
+spritelayout layout_tower_4 {
+ 	ground { sprite: spriteset_firsbase; }
+
+ 	building {
+ 		sprite: spriteset_tower_middle;
+		zoffset: 1;
+	}
+}
+
+
+
+spritelayout layout_tower_purchase {
+	ground {
+        sprite: GROUNDSPRITE_NORMAL;
+	}
+	building {
+		sprite: spriteset_tower_purchase;
+		xoffset: 0; //from NE edge
+        yoffset: -16; //from NW edge
+        zoffset: -16;
+        xextent: 16;
+        yextent: 16;
+        zextent: 16;
+	}
+}
+
+
+
+
+switch (FEAT_OBJECTS, SELF, switch_tower_position, relative_pos) {
+	relative_coord(0, 0): layout_tower_1;
+	relative_coord(0, 1): layout_tower_2;
+	relative_coord(1, 0): layout_tower_3;
+	relative_coord(1, 1): layout_tower_4;
+    layout_tower_1;
+    }
+
+
+
+//decide spritelayout for each of the 4 directions
+switch (FEAT_OBJECTS, SELF, switch_modern_2x2_view, view) {
+    1:  switch_bigshop_position;
+    2:  switch_stadium_position;
+    3:  switch_tower_position;
+    switch_japfactory_position;
+}
+
+
+//calculate ground sprite for purchase menu
+switch (FEAT_OBJECTS, SELF, switch_modern_2x2_purchase, view) {
+    1:  layout_bigshop_purchase;
+    2:  layout_stadium_purchase;
+    3:  layout_tower_purchase;
+    layout_japfactory_purchase;
+}
+
+
+//calculate ground sprite for purchase menu
+switch (FEAT_OBJECTS, SELF, switch_modern_2x2_text, view) {
+    1:  string(STR_SHOP);
+    2:  string(STR_STADIUM);
+    3:  string(STR_TOWER);
+    string(STR_FACTORY);
+}
+
+
+
+
+item (FEAT_OBJECTS, modern_2x2) {
+    property {
+        class:                  "BLDG";
+        classname:              string(STR_INDUSTRIAL);
+        name:                   string(STR_LARGE_BUILDING);
+        climates_available:     ALL_CLIMATES;
+        size:                   [2,2];
+        build_cost_multiplier:  12;
+        remove_cost_multiplier: 11;
+        introduction_date:      date(1930,1,1);
+        end_of_life_date:       0xFFFFFFFF;
+        object_flags:           bitmask(OBJ_FLAG_REMOVE_IS_INCOME);
+        height:                 8;
+        num_views:              4;
+    }
+    graphics {
+		default: switch_modern_2x2_view;
+		purchase: switch_modern_2x2_purchase;
+        additional_text:    switch_modern_2x2_text;
+    }
+}
+
+//Azusa's Stuffs
+
+//ground sprite
+template tmpl_ground_tile(x, y, filename) {
+ [x, y, 64, 31, -31, 0, filename ]
+}
+//1x1 sprite
+template template_object1(x,y,filename) {
+    [x, y, 64, 98, -31, -67, NOCROP, filename]
+}
+//template for the purchase menu
+template template_2x2_purchase(x,y,filename) {
+    [x, y, 128, 200, -95, -169, filename]
+    [x+133, y, 128, 200, -95, -169, filename]
+    [x+266, y, 128, 200, -95, -169, filename]
+    [x+399, y, 128, 200, -95, -169, filename]
+	
+}
+
+//template for sprite tile.1
+template template_2x2_t1(x,y,filename) {
+    [x+32, y, 64, 168, -31, -137, filename]
+    [x+165, y, 64, 168, -31, -137, filename]
+    [x+298, y, 64, 168, -31, -137, filename]
+    [x+431, y, 64, 168, -31, -137, filename]
+	
+}
+
+//template for sprite tile.2
+template template_2x2_t2(x,y,filename) {
+    [x+64, y, 64, 184, -31, -153, filename]
+    [x+197, y, 64, 184, -31, -153, filename]
+    [x+330, y, 64, 184, -31, -153, filename]
+    [x+463, y, 64, 184, -31, -153, filename]
+	
+}
+
+//template for sprite tile.3
+template template_2x2_t3(x,y,filename) {
+    [x, y, 64, 184, -31, -153, filename]
+    [x+133, y, 64, 184, -31, -153, filename]
+    [x+266, y, 64, 184, -31, -153, filename]
+    [x+399, y, 64, 184, -31, -153, filename]
+	
+}
+
+//template for sprite tile.4
+template template_2x2_t4(x,y,filename) {
+    [x+32, y, 64, 200, -31, -169, filename]
+    [x+165, y, 64, 200, -31, -169, filename]
+    [x+298, y, 64, 200, -31, -169, filename]
+    [x+431, y, 64, 200, -31, -169, filename]
+	
+}
+
+
+
+
+/* Shrine 01 - medium shrine*/
+
+spriteset (spriteset_shrine01_red) {
+    template_object1(0,0,"gfx/shrine1.png")
+}
+spriteset (spriteset_shrine01ground) {
+    tmpl_ground_tile(65,0,"gfx/shrine1.png")
+}
+spriteset (spriteset_shrine01snow) {
+    template_object1(132,0,"gfx/shrine1.png")
+}
+spriteset (spriteset_shrine01snowground) {
+    tmpl_ground_tile(197,0,"gfx/shrine1.png")
+}
+
+spriteset (spriteset_shrine01_brown) {
+    template_object1(0,99,"gfx/shrine1.png")
+}
+spriteset (spriteset_shrine01_black) {
+    template_object1(0,198,"gfx/shrine1.png")
+}
+spriteset (spriteset_shrine01_green) {
+    template_object1(0,297,"gfx/shrine1.png")
+}
+
+//shrine 01 - red
+spritelayout spritelayout_shrine01_red {
+    ground {
+        sprite: LOAD_TEMP(0) + LOAD_TEMP(1);
+    }
+    building {
+        sprite: spriteset_shrine01_red(0);
+		hide_sprite: nearby_tile_height(0, 0) >= snowline_height;
+		xextent: 0;
+        yextent: 0;
+        zextent: 24;
+        xoffset: 0; //from NE edge
+        yoffset: 0; //from NW edge
+        zoffset: 0;
+    }
+	building {
+        sprite: spriteset_shrine01snow(0);
+		hide_sprite: nearby_tile_height(0, 0) < snowline_height;
+		xextent: 0;
+        yextent: 0;
+        zextent: 24;
+        xoffset: 0; //from NE edge
+        yoffset: 0; //from NW edge
+        zoffset: 0;
+    }
+}
+//shrine 01 - brown
+spritelayout spritelayout_shrine01_brown {
+    ground {
+        sprite: LOAD_TEMP(0) + LOAD_TEMP(1);
+    }
+    building {
+        sprite: spriteset_shrine01_brown(0);
+		hide_sprite: nearby_tile_height(0, 0) >= snowline_height;
+		xextent: 0;
+        yextent: 0;
+        zextent: 24;
+        xoffset: 0; //from NE edge
+        yoffset: 0; //from NW edge
+        zoffset: 0;
+    }
+	building {
+        sprite: spriteset_shrine01snow(0);
+		hide_sprite: nearby_tile_height(0, 0) < snowline_height;
+		xextent: 0;
+        yextent: 0;
+        zextent: 24;
+        xoffset: 0; //from NE edge
+        yoffset: 0; //from NW edge
+        zoffset: 0;
+    }
+}
+//shrine 01 - black
+spritelayout spritelayout_shrine01_black {
+    ground {
+        sprite: LOAD_TEMP(0) + LOAD_TEMP(1);
+    }
+    building {
+        sprite: spriteset_shrine01_black(0);
+		hide_sprite: nearby_tile_height(0, 0) >= snowline_height;
+		xextent: 0;
+        yextent: 0;
+        zextent: 24;
+        xoffset: 0; //from NE edge
+        yoffset: 0; //from NW edge
+        zoffset: 0;
+    }
+	building {
+        sprite: spriteset_shrine01snow(0);
+		hide_sprite: nearby_tile_height(0, 0) < snowline_height;
+		xextent: 0;
+        yextent: 0;
+        zextent: 24;
+        xoffset: 0; //from NE edge
+        yoffset: 0; //from NW edge
+        zoffset: 0;
+    }
+}
+//shrine 01 - green
+spritelayout spritelayout_shrine01_green {
+    ground {
+        sprite: LOAD_TEMP(0) + LOAD_TEMP(1);
+    }
+    building {
+        sprite: spriteset_shrine01_green(0);
+		hide_sprite: nearby_tile_height(0, 0) >= snowline_height;
+		xextent: 0;
+        yextent: 0;
+        zextent: 24;
+        xoffset: 0; //from NE edge
+        yoffset: 0; //from NW edge
+        zoffset: 0;
+    }
+	building {
+        sprite: spriteset_shrine01snow(0);
+		hide_sprite: nearby_tile_height(0, 0) < snowline_height;
+		xextent: 0;
+        yextent: 0;
+        zextent: 24;
+        xoffset: 0; //from NE edge
+        yoffset: 0; //from NW edge
+        zoffset: 0;
+    }
+}
+//shrine 01 - purchase
+spritelayout spritelayout_shrine01_purchase {
+    ground {
+        sprite: GROUNDSPRITE_NORMAL;
+    }
+    building {
+        sprite: spriteset_shrine01_red(0);
+//		hide_sprite: nearby_tile_height(0, 0) >= snowline_height;
+		xextent: 0;
+        yextent: 0;
+        zextent: 24;
+        xoffset: 0; //from NE edge
+        yoffset: 0; //from NW edge
+        zoffset: 0;
+    }
+}
+
+random_switch (FEAT_OBJECTS, SELF,sw_shrine01_choices){
+	1: spritelayout_shrine01_red;
+	1: spritelayout_shrine01_brown;
+	1: spritelayout_shrine01_black;
+	1: spritelayout_shrine01_green;
+}
+//calculate ground sprite for object
+switch (FEAT_OBJECTS, SELF, sw_shrine01_default, [
+        //tile slope offset in storage register 0
+        STORE_TEMP(slope_to_sprite_offset(tile_slope), 0),
+        //terrain type in storage register 1
+        STORE_TEMP(GROUNDSPRITE_NORMAL, 1),
+        STORE_TEMP(terrain_type == TILETYPE_DESERT ? GROUNDSPRITE_DESERT : LOAD_TEMP(1), 1),
+        STORE_TEMP(terrain_type == TILETYPE_SNOW   ? GROUNDSPRITE_SNOW   : LOAD_TEMP(1), 1)
+        ]) {
+    sw_shrine01_choices;
+}
+
+/* Shrine 2 - small shrine*/
+
+spriteset (spriteset_shrine02_red) {
+    template_object1(0,0,"gfx/shrine2.png")
+}
+spriteset (spriteset_shrine02_red_snow) {
+    template_object1(65,0,"gfx/shrine2.png")
+}
+
+spriteset (spriteset_shrine02_brown) {
+    template_object1(0,99,"gfx/shrine2.png")
+}
+spriteset (spriteset_shrine02_brown_snow) {
+    template_object1(65,99,"gfx/shrine2.png")
+}
+
+spriteset (spriteset_shrine02_black) {
+    template_object1(0,198,"gfx/shrine2.png")
+}
+spriteset (spriteset_shrine02_black_snow) {
+    template_object1(65,198,"gfx/shrine2.png")
+}
+
+spriteset (spriteset_shrine02_green) {
+    template_object1(0,297,"gfx/shrine2.png")
+}
+spriteset (spriteset_shrine02_green_snow) {
+    template_object1(65,297,"gfx/shrine2.png")
+}
+
+//shrine 02 - red
+spritelayout spritelayout_shrine02_red {
+    ground {
+        sprite: LOAD_TEMP(0) + LOAD_TEMP(1);
+    }
+    building {
+        sprite: spriteset_shrine02_red(0);
+		xextent: 0;
+        yextent: 0;
+        zextent: 24;
+        xoffset: 0; //from NE edge
+        yoffset: 0; //from NW edge
+        zoffset: 0;
+    }
+	building {
+        sprite: spriteset_shrine02_red_snow(0);
+		hide_sprite: nearby_tile_height(0, 0) < snowline_height;
+		xextent: 0;
+        yextent: 0;
+        zextent: 24;
+        xoffset: 0; //from NE edge
+        yoffset: 0; //from NW edge
+        zoffset: 0;
+    }
+}
+//shrine 02 - brown
+spritelayout spritelayout_shrine02_brown {
+    ground {
+        sprite: LOAD_TEMP(0) + LOAD_TEMP(1);
+    }
+    building {
+        sprite: spriteset_shrine02_brown(0);
+		hide_sprite: nearby_tile_height(0, 0) >= snowline_height;
+		xextent: 0;
+        yextent: 0;
+        zextent: 24;
+        xoffset: 0; //from NE edge
+        yoffset: 0; //from NW edge
+        zoffset: 0;
+    }
+	building {
+        sprite: spriteset_shrine02_brown_snow(0);
+		hide_sprite: nearby_tile_height(0, 0) < snowline_height;
+		xextent: 0;
+        yextent: 0;
+        zextent: 24;
+        xoffset: 0; //from NE edge
+        yoffset: 0; //from NW edge
+        zoffset: 0;
+    }
+}
+//shrine 02 - black
+spritelayout spritelayout_shrine02_black {
+    ground {
+        sprite: LOAD_TEMP(0) + LOAD_TEMP(1);
+    }
+    building {
+        sprite: spriteset_shrine02_black(0);
+		hide_sprite: nearby_tile_height(0, 0) >= snowline_height;
+		xextent: 0;
+        yextent: 0;
+        zextent: 24;
+        xoffset: 0; //from NE edge
+        yoffset: 0; //from NW edge
+        zoffset: 0;
+    }
+	building {
+        sprite: spriteset_shrine02_black_snow(0);
+		hide_sprite: nearby_tile_height(0, 0) < snowline_height;
+		xextent: 0;
+        yextent: 0;
+        zextent: 24;
+        xoffset: 0; //from NE edge
+        yoffset: 0; //from NW edge
+        zoffset: 0;
+    }
+}
+//shrine 02 - green
+spritelayout spritelayout_shrine02_green {
+    ground {
+        sprite: LOAD_TEMP(0) + LOAD_TEMP(1);
+    }
+    building {
+        sprite: spriteset_shrine02_green(0);
+		hide_sprite: nearby_tile_height(0, 0) >= snowline_height;
+		xextent: 0;
+        yextent: 0;
+        zextent: 24;
+        xoffset: 0; //from NE edge
+        yoffset: 0; //from NW edge
+        zoffset: 0;
+    }
+	building {
+        sprite: spriteset_shrine02_green_snow(0);
+		hide_sprite: nearby_tile_height(0, 0) < snowline_height;
+		xextent: 0;
+        yextent: 0;
+        zextent: 24;
+        xoffset: 0; //from NE edge
+        yoffset: 0; //from NW edge
+        zoffset: 0;
+    }
+}
+
+spritelayout spritelayout_shrine02_purchase {
+    ground {
+        sprite: GROUNDSPRITE_NORMAL;
+    }
+    building {
+        sprite: spriteset_shrine02_green(0);
+		xextent: 0;
+        yextent: 0;
+        zextent: 24;
+        xoffset: 0; //from NE edge
+        yoffset: 0; //from NW edge
+        zoffset: 0;
+    }
+}
+
+random_switch (FEAT_OBJECTS, SELF,sw_shrine02_choices){
+	1: spritelayout_shrine02_red;
+	1: spritelayout_shrine02_brown;
+	1: spritelayout_shrine02_black;
+	1: spritelayout_shrine02_green;
+}
+switch (FEAT_OBJECTS, SELF, sw_shrine02_default, [
+        //tile slope offset in storage register 0
+        STORE_TEMP(slope_to_sprite_offset(tile_slope), 0),
+        //terrain type in storage register 1
+        STORE_TEMP(GROUNDSPRITE_NORMAL, 1),
+        STORE_TEMP(terrain_type == TILETYPE_DESERT ? GROUNDSPRITE_DESERT : LOAD_TEMP(1), 1),
+        STORE_TEMP(terrain_type == TILETYPE_SNOW   ? GROUNDSPRITE_SNOW   : LOAD_TEMP(1), 1)
+        ]) {
+    sw_shrine02_choices;
+}
+
+
+/* Shrine 3 - little shrine TODO DRAW VARIANTS*/
+
+spriteset (spriteset_shrine03_red) {
+    template_object1(0,0,"gfx/shrine3.png")
+}
+spriteset (spriteset_shrine03_red_snow) {
+    template_object1(65,0,"gfx/shrine3.png")
+}
+
+spriteset (spriteset_shrine03_brown) {
+    template_object1(0,99,"gfx/shrine3.png")
+}
+spriteset (spriteset_shrine03_brown_snow) {
+    template_object1(65,99,"gfx/shrine3.png")
+}
+
+spriteset (spriteset_shrine03_black) {
+    template_object1(0,198,"gfx/shrine3.png")
+}
+spriteset (spriteset_shrine03_black_snow) {
+    template_object1(65,198,"gfx/shrine3.png")
+}
+
+spriteset (spriteset_shrine03_green) {
+    template_object1(0,297,"gfx/shrine3.png")
+}
+spriteset (spriteset_shrine03_green_snow) {
+    template_object1(65,297,"gfx/shrine3.png")
+}
+
+//shrine 02 - red
+spritelayout spritelayout_shrine03_red {
+    ground {
+        sprite: LOAD_TEMP(0) + LOAD_TEMP(1);
+    }
+    building {
+        sprite: spriteset_shrine03_red(0);
+		xextent: 0;
+        yextent: 0;
+        zextent: 24;
+        xoffset: 0; //from NE edge
+        yoffset: 0; //from NW edge
+        zoffset: 0;
+    }
+	building {
+        sprite: spriteset_shrine03_red_snow(0);
+		hide_sprite: nearby_tile_height(0, 0) < snowline_height;
+		xextent: 0;
+        yextent: 0;
+        zextent: 24;
+        xoffset: 0; //from NE edge
+        yoffset: 0; //from NW edge
+        zoffset: 0;
+    }
+}
+//shrine 02 - brown
+spritelayout spritelayout_shrine03_brown {
+    ground {
+        sprite: LOAD_TEMP(0) + LOAD_TEMP(1);
+    }
+    building {
+        sprite: spriteset_shrine03_brown(0);
+		hide_sprite: nearby_tile_height(0, 0) >= snowline_height;
+		xextent: 0;
+        yextent: 0;
+        zextent: 24;
+        xoffset: 0; //from NE edge
+        yoffset: 0; //from NW edge
+        zoffset: 0;
+    }
+	building {
+        sprite: spriteset_shrine03_brown_snow(0);
+		hide_sprite: nearby_tile_height(0, 0) < snowline_height;
+		xextent: 0;
+        yextent: 0;
+        zextent: 24;
+        xoffset: 0; //from NE edge
+        yoffset: 0; //from NW edge
+        zoffset: 0;
+    }
+}
+//shrine 02 - black
+spritelayout spritelayout_shrine03_black {
+    ground {
+        sprite: LOAD_TEMP(0) + LOAD_TEMP(1);
+    }
+    building {
+        sprite: spriteset_shrine03_black(0);
+		hide_sprite: nearby_tile_height(0, 0) >= snowline_height;
+		xextent: 0;
+        yextent: 0;
+        zextent: 24;
+        xoffset: 0; //from NE edge
+        yoffset: 0; //from NW edge
+        zoffset: 0;
+    }
+	building {
+        sprite: spriteset_shrine03_black_snow(0);
+		hide_sprite: nearby_tile_height(0, 0) < snowline_height;
+		xextent: 0;
+        yextent: 0;
+        zextent: 24;
+        xoffset: 0; //from NE edge
+        yoffset: 0; //from NW edge
+        zoffset: 0;
+    }
+}
+//shrine 02 - green
+spritelayout spritelayout_shrine03_green {
+    ground {
+        sprite: LOAD_TEMP(0) + LOAD_TEMP(1);
+    }
+    building {
+        sprite: spriteset_shrine03_green(0);
+		hide_sprite: nearby_tile_height(0, 0) >= snowline_height;
+		xextent: 0;
+        yextent: 0;
+        zextent: 24;
+        xoffset: 0; //from NE edge
+        yoffset: 0; //from NW edge
+        zoffset: 0;
+    }
+	building {
+        sprite: spriteset_shrine03_green_snow(0);
+		hide_sprite: nearby_tile_height(0, 0) < snowline_height;
+		xextent: 0;
+        yextent: 0;
+        zextent: 24;
+        xoffset: 0; //from NE edge
+        yoffset: 0; //from NW edge
+        zoffset: 0;
+    }
+}
+
+spritelayout spritelayout_shrine03_purchase {
+    ground {
+        sprite: GROUNDSPRITE_NORMAL;
+    }
+    building {
+        sprite: spriteset_shrine03_green(0);
+		xextent: 0;
+        yextent: 0;
+        zextent: 24;
+        xoffset: 0; //from NE edge
+        yoffset: 0; //from NW edge
+        zoffset: 0;
+    }
+}
+
+random_switch (FEAT_OBJECTS, SELF,sw_shrine03_choices){
+	1: spritelayout_shrine03_red;
+	1: spritelayout_shrine03_brown;
+	1: spritelayout_shrine03_black;
+	1: spritelayout_shrine03_green;
+}
+switch (FEAT_OBJECTS, SELF, sw_shrine03_default, [
+        //tile slope offset in storage register 0
+        STORE_TEMP(slope_to_sprite_offset(tile_slope), 0),
+        //terrain type in storage register 1
+        STORE_TEMP(GROUNDSPRITE_NORMAL, 1),
+        STORE_TEMP(terrain_type == TILETYPE_DESERT ? GROUNDSPRITE_DESERT : LOAD_TEMP(1), 1),
+        STORE_TEMP(terrain_type == TILETYPE_SNOW   ? GROUNDSPRITE_SNOW   : LOAD_TEMP(1), 1)
+        ]) {
+    sw_shrine03_choices;
+}
+
+
+
+//STATUE
+
+spriteset(spriteset_statue, "gfx/statch.png") { template_smokestack(0,0) }
+
+
+spritelayout layout_statue {
+ 	ground { sprite: spriteset_firsbase; }
+
+ 	building {
+ 		sprite: spriteset_statue;
+	}
+}
+
+
+
+
+switch (FEAT_OBJECTS, SELF, switch_shrine_variant, view) {
+    1:  sw_shrine01_default;
+    2:  sw_shrine02_default;
+    3:  sw_shrine03_default;
+    layout_statue;
+}
+
+switch (FEAT_OBJECTS, SELF, switch_shrine_purchase, view) {
+    1:  spritelayout_shrine01_purchase;
+    2:  spritelayout_shrine02_purchase;
+    3:  spritelayout_shrine03_purchase;
+    layout_statue;
+}
+
+switch (FEAT_OBJECTS, SELF, switch_shrine_text, view) {
+    1:  string(STR_SHRINE01_PURCHASE);
+    2:  string(STR_SHRINE02_PURCHASE);
+    3:  string(STR_SHRINE03_PURCHASE);
+    string(STR_STATUE);
+}
+
+
+
+
+item (FEAT_OBJECTS, item_shrine01){
+	property{
+		class:	"BLDG";
+//		classname:              string(STR_HIST);
+        name:                   string(STR_SHRINES);
+        climates_available:     ALL_CLIMATES;
+        size:                   [1,1];
+        build_cost_multiplier:  10;
+        remove_cost_multiplier: 20;
+        introduction_date:      0000000000;
+        end_of_life_date:       0xFFFFFFFF;
+        object_flags:           bitmask(OBJ_FLAG_ANYTHING_REMOVE);
+        height:                 2;
+        num_views:              4;
+    }
+    graphics {
+        default:            switch_shrine_variant;
+		purchase:			switch_shrine_purchase;
+        additional_text:    switch_shrine_text;
+    }
+}
+
+
+//industry tiles 
+
+spriteset (spriteset_industrial_1) {
+    template_object1(0,0,"gfx/light_industry.png")
+}
+spriteset (spriteset_industrial_1_snow) {
+    template_object1(65,0,"gfx/light_industry.png")
+}
+
+spriteset (spriteset_industrial_2) {
+    template_object1(0,99,"gfx/light_industry.png")
+}
+spriteset (spriteset_industrial_2_snow) {
+    template_object1(65,99,"gfx/light_industry.png")
+}
+
+spriteset (spriteset_industrial_3) {
+    template_object1(0,198,"gfx/light_industry.png")
+}
+spriteset (spriteset_industrial_3_snow) {
+    template_object1(65,198,"gfx/light_industry.png")
+}
+
+spriteset (spriteset_industrial_4) {
+    template_object1(0,297,"gfx/light_industry.png")
+}
+spriteset (spriteset_industrial_4_snow) {
+    template_object1(65,297,"gfx/light_industry.png")
+}
+
+
+
+spritelayout spritelayout_industrial_1 {
+    ground {
+        sprite: LOAD_TEMP(0) + LOAD_TEMP(1);
+    }
+    building {
+        sprite: spriteset_industrial_1(0);
+		xextent: 0;
+        yextent: 0;
+        zextent: 24;
+        xoffset: 0; //from NE edge
+        yoffset: 0; //from NW edge
+        zoffset: 0;
+    }
+	building {
+        sprite: spriteset_industrial_1_snow(0);
+		hide_sprite: nearby_tile_height(0, 0) < snowline_height;
+		xextent: 0;
+        yextent: 0;
+        zextent: 24;
+        xoffset: 0; //from NE edge
+        yoffset: 0; //from NW edge
+        zoffset: 0;
+    }
+}
+
+spritelayout spritelayout_industrial_2 {
+    ground {
+        sprite: LOAD_TEMP(0) + LOAD_TEMP(1);
+    }
+    building {
+        sprite: spriteset_industrial_2(0);
+		xextent: 0;
+        yextent: 0;
+        zextent: 24;
+        xoffset: 0; //from NE edge
+        yoffset: 0; //from NW edge
+        zoffset: 0;
+    }
+	building {
+        sprite: spriteset_industrial_2_snow(0);
+		hide_sprite: nearby_tile_height(0, 0) < snowline_height;
+		xextent: 0;
+        yextent: 0;
+        zextent: 24;
+        xoffset: 0; //from NE edge
+        yoffset: 0; //from NW edge
+        zoffset: 0;
+    }
+}
+
+spritelayout spritelayout_industrial_3 {
+    ground {
+        sprite: LOAD_TEMP(0) + LOAD_TEMP(1);
+    }
+    building {
+        sprite: spriteset_industrial_3(0);
+		xextent: 0;
+        yextent: 0;
+        zextent: 24;
+        xoffset: 0; //from NE edge
+        yoffset: 0; //from NW edge
+        zoffset: 0;
+    }
+	building {
+        sprite: spriteset_industrial_3_snow(0);
+		hide_sprite: nearby_tile_height(0, 0) < snowline_height;
+		xextent: 0;
+        yextent: 0;
+        zextent: 24;
+        xoffset: 0; //from NE edge
+        yoffset: 0; //from NW edge
+        zoffset: 0;
+    }
+}
+
+spritelayout spritelayout_industrial_4 {
+    ground {
+        sprite: LOAD_TEMP(0) + LOAD_TEMP(1);
+    }
+    building {
+        sprite: spriteset_industrial_4(0);
+		xextent: 0;
+        yextent: 0;
+        zextent: 24;
+        xoffset: 0; //from NE edge
+        yoffset: 0; //from NW edge
+        zoffset: 0;
+    }
+	building {
+        sprite: spriteset_industrial_4_snow(0);
+		hide_sprite: nearby_tile_height(0, 0) < snowline_height;
+		xextent: 0;
+        yextent: 0;
+        zextent: 24;
+        xoffset: 0; //from NE edge
+        yoffset: 0; //from NW edge
+        zoffset: 0;
+    }
+}
+
+switch (FEAT_OBJECTS, SELF, switch_industrial_variant, view) {
+    1:  spritelayout_industrial_1;
+    2:  spritelayout_industrial_2;
+    3:  spritelayout_industrial_3;
+    spritelayout_industrial_4;
+}
+
+
+switch (FEAT_OBJECTS, SELF, switch_industrial_text, view) {
+    1:  string(STR_LIGHT_INDUSTRY_SHED);
+    2:  string(STR_LIGHT_INDUSTRY_SHED);
+	string(STR_LIGHT_INDUSTRY_YARD);
+}
+
+
+
+item (FEAT_OBJECTS, item_light_industrial){
+	property{
+		class:	"BLDG";
+//		classname:              string(STR_HIST);
+        name:                   string(STR_LIGHT_INDUSTRY);
+        climates_available:     ALL_CLIMATES;
+        size:                   [1,1];
+        build_cost_multiplier:  10;
+        remove_cost_multiplier: 20;
+        introduction_date:      1940;
+        end_of_life_date:       0xFFFFFFFF;
+        object_flags:           bitmask(OBJ_FLAG_ANYTHING_REMOVE);
+        height:                 2;
+        num_views:              4;
+    }
+    graphics {
+        default:            switch_industrial_variant;
+//		purchase:			switch_shrine_purchase;
+        additional_text:    switch_industrial_text;
+    }
+}
+
+
+// CASTLE & SHRINE
+
+//Jap Castle
+
+spriteset(spriteset_castle_old_1_purchase, "gfx/castle1.png") { template_purchase(1, 1) }
+
+spriteset(spriteset_castle_old_1_left, "gfx/castle1.png") { template_smokestack(1,1) }
+spriteset(spriteset_castle_old_1_middle, "gfx/castle1.png") { template_smokestack(33,1) }
+spriteset(spriteset_castle_old_1_right, "gfx/castle1.png") { template_smokestack(65,1) }
+
+spriteset(spriteset_castle_old_2_purchase, "gfx/castle1.png") { template_purchase(130, 1) }
+
+spriteset(spriteset_castle_old_2_left, "gfx/castle1.png") { template_smokestack(130,1) }
+spriteset(spriteset_castle_old_2_middle, "gfx/castle1.png") { template_smokestack(162,1) }
+spriteset(spriteset_castle_old_2_right, "gfx/castle1.png") { template_smokestack(194,1) }
+
+spriteset(spriteset_castle_old_3_purchase, "gfx/castle1.png") { template_purchase(259, 1) }
+
+spriteset(spriteset_castle_old_3_left, "gfx/castle1.png") { template_smokestack(259,1) }
+spriteset(spriteset_castle_old_3_middle, "gfx/castle1.png") { template_smokestack(291,1) }
+spriteset(spriteset_castle_old_3_right, "gfx/castle1.png") { template_smokestack(323,1) }
+
+spriteset(spriteset_castle_old_4_purchase, "gfx/castle1.png") { template_purchase(388, 1) }
+
+spriteset(spriteset_castle_old_4_left, "gfx/castle1.png") { template_smokestack(388,1) }
+spriteset(spriteset_castle_old_4_middle, "gfx/castle1.png") { template_smokestack(420,1) }
+spriteset(spriteset_castle_old_4_right, "gfx/castle1.png") { template_smokestack(452,1) }
+
+
+//NEWS North East West South / blank right left middle
+
+spritelayout layout_base_1 {
+ 	ground { sprite: spriteset_firsbase; }
+}
+
+spritelayout layout_castle_old_1_right {
+ 	ground { sprite: spriteset_firsbase; }
+
+ 	building {
+ 		sprite: spriteset_castle_old_1_right;
+		zoffset: -15;
+		zextent: 32;
+	}
+}
+
+spritelayout layout_castle_old_1_left {
+ 	ground { sprite: spriteset_firsbase; }
+
+ 	building {
+ 		sprite: spriteset_castle_old_1_left;
+		zoffset: -15; 
+		zextent: 32;
+	}
+}
+
+spritelayout layout_castle_old_1_middle {
+ 	ground { sprite: spriteset_firsbase; }
+
+ 	building {
+ 		sprite: spriteset_castle_old_1_middle;
+		zoffset: 1;
+	}
+}
+
+spritelayout layout_castle_old_2_right {
+ 	ground { sprite: spriteset_firsbase; }
+
+ 	building {
+ 		sprite: spriteset_castle_old_2_right;
+		zoffset: -15;
+		zextent: 32;
+	}
+}
+
+spritelayout layout_castle_old_2_left {
+ 	ground { sprite: spriteset_firsbase; }
+
+ 	building {
+ 		sprite: spriteset_castle_old_2_left;
+		zoffset: -15; 
+		zextent: 32;
+	}
+}
+
+spritelayout layout_castle_old_2_middle {
+ 	ground { sprite: spriteset_firsbase; }
+
+ 	building {
+ 		sprite: spriteset_castle_old_2_middle;
+		zoffset: 1;
+	}
+}
+
+spritelayout layout_castle_old_3_right {
+ 	ground { sprite: spriteset_firsbase; }
+
+ 	building {
+ 		sprite: spriteset_castle_old_3_right;
+		zoffset: -15;
+		zextent: 32;
+	}
+}
+
+spritelayout layout_castle_old_3_left {
+ 	ground { sprite: spriteset_firsbase; }
+
+ 	building {
+ 		sprite: spriteset_castle_old_3_left;
+		zoffset: -15; 
+		zextent: 32;
+	}
+}
+
+spritelayout layout_castle_old_3_middle {
+ 	ground { sprite: spriteset_firsbase; }
+
+ 	building {
+ 		sprite: spriteset_castle_old_3_middle;
+		zoffset: 1;
+	}
+}
+
+spritelayout layout_castle_old_4_right {
+ 	ground { sprite: spriteset_firsbase; }
+
+ 	building {
+ 		sprite: spriteset_castle_old_4_right;
+		zoffset: -15;
+		zextent: 32;
+	}
+}
+
+spritelayout layout_castle_old_4_left {
+ 	ground { sprite: spriteset_firsbase; }
+
+ 	building {
+ 		sprite: spriteset_castle_old_4_left;
+		zoffset: -15; 
+		zextent: 32;
+	}
+}
+
+spritelayout layout_castle_old_4_middle {
+ 	ground { sprite: spriteset_firsbase; }
+
+ 	building {
+ 		sprite: spriteset_castle_old_4_middle;
+		zoffset: 1;
+	}
+}
+
+
+
+
+spritelayout layout_castle_old_1_purchase {
+	ground {
+        sprite: GROUNDSPRITE_NORMAL;
+	}
+	building {
+		sprite: spriteset_castle_old_1_purchase;
+		xoffset: 0; //from NE edge
+        yoffset: -16; //from NW edge
+        zoffset: -16;
+        xextent: 16;
+        yextent: 16;
+        zextent: 16;
+	}
+}
+
+spritelayout layout_castle_old_2_purchase {
+	ground {
+        sprite: GROUNDSPRITE_NORMAL;
+	}
+	building {
+		sprite: spriteset_castle_old_2_purchase;
+		xoffset: 0; //from NE edge
+        yoffset: -16; //from NW edge
+        zoffset: -16;
+        xextent: 16;
+        yextent: 16;
+        zextent: 16;
+	}
+}
+
+spritelayout layout_castle_old_3_purchase {
+	ground {
+        sprite: GROUNDSPRITE_NORMAL;
+	}
+	building {
+		sprite: spriteset_castle_old_3_purchase;
+		xoffset: 0; //from NE edge
+        yoffset: -16; //from NW edge
+        zoffset: -16;
+        xextent: 16;
+        yextent: 16;
+        zextent: 16;
+	}
+}
+
+spritelayout layout_castle_old_4_purchase {
+	ground {
+        sprite: GROUNDSPRITE_NORMAL;
+	}
+	building {
+		sprite: spriteset_castle_old_4_purchase;
+		xoffset: 0; //from NE edge
+        yoffset: -16; //from NW edge
+        zoffset: -16;
+        xextent: 16;
+        yextent: 16;
+        zextent: 16;
+	}
+}
+
+
+switch (FEAT_OBJECTS, SELF, switch_castle_old_1_position, relative_pos) {
+	relative_coord(0, 0): layout_base_1;
+	relative_coord(0, 1): layout_castle_old_1_right;
+	relative_coord(1, 0): layout_castle_old_1_left;
+	relative_coord(1, 1): layout_castle_old_1_middle;
+    layout_base_1;
+}
+	
+switch (FEAT_OBJECTS, SELF, switch_castle_old_2_position, relative_pos) {
+	relative_coord(0, 0): layout_base_1;
+	relative_coord(0, 1): layout_castle_old_2_right;
+	relative_coord(1, 0): layout_castle_old_2_left;
+	relative_coord(1, 1): layout_castle_old_2_middle;
+    layout_base_1;
+}
+	
+switch (FEAT_OBJECTS, SELF, switch_castle_old_3_position, relative_pos) {
+	relative_coord(0, 0): layout_base_1;
+	relative_coord(0, 1): layout_castle_old_3_right;
+	relative_coord(1, 0): layout_castle_old_3_left;
+	relative_coord(1, 1): layout_castle_old_3_middle;
+    layout_base_1;
+}
+	
+switch (FEAT_OBJECTS, SELF, switch_castle_old_4_position, relative_pos) {
+	relative_coord(0, 0): layout_base_1;
+	relative_coord(0, 1): layout_castle_old_4_right;
+	relative_coord(1, 0): layout_castle_old_4_left;
+	relative_coord(1, 1): layout_castle_old_4_middle;
+    layout_base_1;
+}
+
+
+
+// 4 views
+switch (FEAT_OBJECTS, SELF, switch_castle_old_view, view) {
+    1:  switch_castle_old_1_position;
+    2:  switch_castle_old_2_position;
+    3:  switch_castle_old_3_position;
+    switch_castle_old_4_position;
+}
+
+
+
+// sprite for purchase menu
+switch (FEAT_OBJECTS, SELF, switch_castle_old_purchase, view) {
+    1:  layout_castle_old_1_purchase;
+    2:  layout_castle_old_2_purchase;
+    3:  layout_castle_old_3_purchase;
+    layout_castle_old_4_purchase;
+}
+
+
+
+
+
+
+item (FEAT_OBJECTS, castle_1) {
+    property {
+        class:                  "BLDG";
+//        classname:              string(STR_HISTORIC_2X2);
+        name:                   string(STR_CASTLE_1);
+        climates_available:     ALL_CLIMATES;
+        size:                   [2,2];
+        build_cost_multiplier:  80;
+        remove_cost_multiplier: 100;
+        introduction_date:      0x00000000;
+        end_of_life_date:       0xFFFFFFFF;
+//        object_flags:           bitmask(OBJ_FLAG_REMOVE_IS_INCOME);
+        height:                 8;
+        num_views:              4;
+    }
+    graphics {
+		default: switch_castle_old_view;
+		purchase: switch_castle_old_purchase;
+        additional_text:    string(STR_CASTLE_1);
+    }
+}
+
+//Temple 1 ???
+
+
+spriteset(spriteset_temple_1_1_purchase, "gfx/temple1.png") { template_purchase(1, 1) }
+
+spriteset(spriteset_temple_1_1_left, "gfx/temple1.png") { template_smokestack(1,1) }
+spriteset(spriteset_temple_1_1_middle, "gfx/temple1.png") { template_smokestack(33,1) }
+spriteset(spriteset_temple_1_1_right, "gfx/temple1.png") { template_smokestack(65,1) }
+
+spriteset(spriteset_temple_1_2_purchase, "gfx/temple1.png") { template_purchase(130, 1) }
+
+spriteset(spriteset_temple_1_2_left, "gfx/temple1.png") { template_smokestack(130,1) }
+spriteset(spriteset_temple_1_2_middle, "gfx/temple1.png") { template_smokestack(162,1) }
+spriteset(spriteset_temple_1_2_right, "gfx/temple1.png") { template_smokestack(194,1) }
+
+spriteset(spriteset_temple_1_3_purchase, "gfx/temple1.png") { template_purchase(259, 1) }
+
+spriteset(spriteset_temple_1_3_left, "gfx/temple1.png") { template_smokestack(259,1) }
+spriteset(spriteset_temple_1_3_middle, "gfx/temple1.png") { template_smokestack(291,1) }
+spriteset(spriteset_temple_1_3_right, "gfx/temple1.png") { template_smokestack(323,1) }
+
+spriteset(spriteset_temple_1_4_purchase, "gfx/temple1.png") { template_purchase(388, 1) }
+
+spriteset(spriteset_temple_1_4_left, "gfx/temple1.png") { template_smokestack(388,1) }
+spriteset(spriteset_temple_1_4_middle, "gfx/temple1.png") { template_smokestack(420,1) }
+spriteset(spriteset_temple_1_4_right, "gfx/temple1.png") { template_smokestack(452,1) }
+
+
+//NEWS North East West South / blank right left middle
+
+spritelayout layout_temple_1 {
+ 	ground { sprite: spriteset_templebase; }
+}
+
+spritelayout layout_temple_1_1_right {
+ 	ground { sprite: spriteset_templebase; }
+
+ 	building {
+ 		sprite: spriteset_temple_1_1_right;
+		zoffset: -15;
+		zextent: 32;
+	}
+}
+
+spritelayout layout_temple_1_1_left {
+ 	ground { sprite: spriteset_templebase; }
+
+ 	building {
+ 		sprite: spriteset_temple_1_1_left;
+		zoffset: -15; 
+		zextent: 32;
+	}
+}
+
+spritelayout layout_temple_1_1_middle {
+ 	ground { sprite: spriteset_templebase; }
+
+ 	building {
+ 		sprite: spriteset_temple_1_1_middle;
+		zoffset: 1;
+	}
+}
+
+spritelayout layout_temple_1_2_right {
+ 	ground { sprite: spriteset_templebase; }
+
+ 	building {
+ 		sprite: spriteset_temple_1_2_right;
+		zoffset: -15;
+		zextent: 32;
+	}
+}
+
+spritelayout layout_temple_1_2_left {
+ 	ground { sprite: spriteset_templebase; }
+
+ 	building {
+ 		sprite: spriteset_temple_1_2_left;
+		zoffset: -15; 
+		zextent: 32;
+	}
+}
+
+spritelayout layout_temple_1_2_middle {
+ 	ground { sprite: spriteset_templebase; }
+
+ 	building {
+ 		sprite: spriteset_temple_1_2_middle;
+		zoffset: 1;
+	}
+}
+
+spritelayout layout_temple_1_3_right {
+ 	ground { sprite: spriteset_templebase; }
+
+ 	building {
+ 		sprite: spriteset_temple_1_3_right;
+		zoffset: -15;
+		zextent: 32;
+	}
+}
+
+spritelayout layout_temple_1_3_left {
+ 	ground { sprite: spriteset_templebase; }
+
+ 	building {
+ 		sprite: spriteset_temple_1_3_left;
+		zoffset: -15; 
+		zextent: 32;
+	}
+}
+
+spritelayout layout_temple_1_3_middle {
+ 	ground { sprite: spriteset_templebase; }
+
+ 	building {
+ 		sprite: spriteset_temple_1_3_middle;
+		zoffset: 1;
+	}
+}
+
+spritelayout layout_temple_1_4_right {
+ 	ground { sprite: spriteset_templebase; }
+
+ 	building {
+ 		sprite: spriteset_temple_1_4_right;
+		zoffset: -15;
+		zextent: 32;
+	}
+}
+
+spritelayout layout_temple_1_4_left {
+ 	ground { sprite: spriteset_templebase; }
+
+ 	building {
+ 		sprite: spriteset_temple_1_4_left;
+		zoffset: -15; 
+		zextent: 32;
+	}
+}
+
+spritelayout layout_temple_1_4_middle {
+ 	ground { sprite: spriteset_templebase; }
+
+ 	building {
+ 		sprite: spriteset_temple_1_4_middle;
+		zoffset: 1;
+	}
+}
+
+
+
+
+spritelayout layout_temple_1_1_purchase {
+	ground {
+        sprite: GROUNDSPRITE_NORMAL;
+	}
+	building {
+		sprite: spriteset_temple_1_1_purchase;
+		xoffset: 0; //from NE edge
+        yoffset: -16; //from NW edge
+        zoffset: -16;
+        xextent: 16;
+        yextent: 16;
+        zextent: 16;
+	}
+}
+
+spritelayout layout_temple_1_2_purchase {
+	ground {
+        sprite: GROUNDSPRITE_NORMAL;
+	}
+	building {
+		sprite: spriteset_temple_1_2_purchase;
+		xoffset: 0; //from NE edge
+        yoffset: -16; //from NW edge
+        zoffset: -16;
+        xextent: 16;
+        yextent: 16;
+        zextent: 16;
+	}
+}
+
+spritelayout layout_temple_1_3_purchase {
+	ground {
+        sprite: GROUNDSPRITE_NORMAL;
+	}
+	building {
+		sprite: spriteset_temple_1_3_purchase;
+		xoffset: 0; //from NE edge
+        yoffset: -16; //from NW edge
+        zoffset: -16;
+        xextent: 16;
+        yextent: 16;
+        zextent: 16;
+	}
+}
+
+spritelayout layout_temple_1_4_purchase {
+	ground {
+        sprite: GROUNDSPRITE_NORMAL;
+	}
+	building {
+		sprite: spriteset_temple_1_4_purchase;
+		xoffset: 0; //from NE edge
+        yoffset: -16; //from NW edge
+        zoffset: -16;
+        xextent: 16;
+        yextent: 16;
+        zextent: 16;
+	}
+}
+
+
+switch (FEAT_OBJECTS, SELF, switch_temple_1_1_position, relative_pos) {
+	relative_coord(0, 0): layout_templebase;
+	relative_coord(0, 1): layout_temple_1_1_right;
+	relative_coord(1, 0): layout_temple_1_1_left;
+	relative_coord(1, 1): layout_temple_1_1_middle;
+    layout_templebase;
+}
+	
+switch (FEAT_OBJECTS, SELF, switch_temple_1_2_position, relative_pos) {
+	relative_coord(0, 0): layout_templebase;
+	relative_coord(0, 1): layout_temple_1_2_right;
+	relative_coord(1, 0): layout_temple_1_2_left;
+	relative_coord(1, 1): layout_temple_1_2_middle;
+    layout_templebase;
+}
+	
+switch (FEAT_OBJECTS, SELF, switch_temple_1_3_position, relative_pos) {
+	relative_coord(0, 0): layout_templebase;
+	relative_coord(0, 1): layout_temple_1_3_right;
+	relative_coord(1, 0): layout_temple_1_3_left;
+	relative_coord(1, 1): layout_temple_1_3_middle;
+    layout_templebase;
+}
+	
+switch (FEAT_OBJECTS, SELF, switch_temple_1_4_position, relative_pos) {
+	relative_coord(0, 0): layout_templebase;
+	relative_coord(0, 1): layout_temple_1_4_right;
+	relative_coord(1, 0): layout_temple_1_4_left;
+	relative_coord(1, 1): layout_temple_1_4_middle;
+    layout_templebase;
+}
+
+
+
+// 4 views
+switch (FEAT_OBJECTS, SELF, switch_temple_1_view, view) {
+    1:  switch_temple_1_1_position;
+    2:  switch_temple_1_2_position;
+    3:  switch_temple_1_3_position;
+    switch_temple_1_4_position;
+}
+
+
+
+// sprite for purchase menu
+switch (FEAT_OBJECTS, SELF, switch_temple_1_purchase, view) {
+    1:  layout_temple_1_1_purchase;
+    2:  layout_temple_1_2_purchase;
+    3:  layout_temple_1_3_purchase;
+    layout_temple_1_4_purchase;
+}
+
+
+
+
+
+
+item (FEAT_OBJECTS, temple_1) {
+    property {
+        class:                  "BLDG";
+//        classname:              string(STR_HISTORIC_2X2);
+        name:                   string(STR_TEMPLE_1);
+        climates_available:     ALL_CLIMATES;
+        size:                   [2,2];
+        build_cost_multiplier:  80;
+        remove_cost_multiplier: 100;
+        introduction_date:      0x00000000;
+        end_of_life_date:       0xFFFFFFFF;
+//        object_flags:           bitmask(OBJ_FLAG_REMOVE_IS_INCOME);
+        height:                 8;
+        num_views:              4;
+    }
+    graphics {
+		default: switch_temple_1_view;
+		purchase: switch_temple_1_purchase;
+        additional_text:    string(STR_TEMPLE_1);
+    }
+}
+
+
+//Temple 2
+
+
+spriteset(spriteset_temple_2_1_purchase, "gfx/temple2.png") { template_purchase(1, 1) }
+
+spriteset(spriteset_temple_2_1_left, "gfx/temple2.png") { template_smokestack(1,1) }
+spriteset(spriteset_temple_2_1_middle, "gfx/temple2.png") { template_smokestack(33,1) }
+spriteset(spriteset_temple_2_1_right, "gfx/temple2.png") { template_smokestack(65,1) }
+
+spriteset(spriteset_temple_2_2_purchase, "gfx/temple2.png") { template_purchase(130, 1) }
+
+spriteset(spriteset_temple_2_2_left, "gfx/temple2.png") { template_smokestack(130,1) }
+spriteset(spriteset_temple_2_2_middle, "gfx/temple2.png") { template_smokestack(162,1) }
+spriteset(spriteset_temple_2_2_right, "gfx/temple2.png") { template_smokestack(194,1) }
+
+spriteset(spriteset_temple_2_3_purchase, "gfx/temple2.png") { template_purchase(259, 1) }
+
+spriteset(spriteset_temple_2_3_left, "gfx/temple2.png") { template_smokestack(259,1) }
+spriteset(spriteset_temple_2_3_middle, "gfx/temple2.png") { template_smokestack(291,1) }
+spriteset(spriteset_temple_2_3_right, "gfx/temple2.png") { template_smokestack(323,1) }
+
+spriteset(spriteset_temple_2_4_purchase, "gfx/temple2.png") { template_purchase(388, 1) }
+
+spriteset(spriteset_temple_2_4_left, "gfx/temple2.png") { template_smokestack(388,1) }
+spriteset(spriteset_temple_2_4_middle, "gfx/temple2.png") { template_smokestack(420,1) }
+spriteset(spriteset_temple_2_4_right, "gfx/temple2.png") { template_smokestack(452,1) }
+
+
+//NEWS North East West South / blank right left middle
+
+spritelayout layout_temple_2 {
+ 	ground { sprite: spriteset_templebase; }
+}
+
+spritelayout layout_temple_2_1_right {
+ 	ground { sprite: spriteset_templebase; }
+
+ 	building {
+ 		sprite: spriteset_temple_2_1_right;
+		zoffset: -15;
+		zextent: 32;
+	}
+}
+
+spritelayout layout_temple_2_1_left {
+ 	ground { sprite: spriteset_templebase; }
+
+ 	building {
+ 		sprite: spriteset_temple_2_1_left;
+		zoffset: -15; 
+		zextent: 32;
+	}
+}
+
+spritelayout layout_temple_2_1_middle {
+ 	ground { sprite: spriteset_templebase; }
+
+ 	building {
+ 		sprite: spriteset_temple_2_1_middle;
+		zoffset: 1;
+	}
+}
+
+spritelayout layout_temple_2_2_right {
+ 	ground { sprite: spriteset_templebase; }
+
+ 	building {
+ 		sprite: spriteset_temple_2_2_right;
+		zoffset: -15;
+		zextent: 32;
+	}
+}
+
+spritelayout layout_temple_2_2_left {
+ 	ground { sprite: spriteset_templebase; }
+
+ 	building {
+ 		sprite: spriteset_temple_2_2_left;
+		zoffset: -15; 
+		zextent: 32;
+	}
+}
+
+spritelayout layout_temple_2_2_middle {
+ 	ground { sprite: spriteset_templebase; }
+
+ 	building {
+ 		sprite: spriteset_temple_2_2_middle;
+		zoffset: 1;
+	}
+}
+
+spritelayout layout_temple_2_3_right {
+ 	ground { sprite: spriteset_templebase; }
+
+ 	building {
+ 		sprite: spriteset_temple_2_3_right;
+		zoffset: -15;
+		zextent: 32;
+	}
+}
+
+spritelayout layout_temple_2_3_left {
+ 	ground { sprite: spriteset_templebase; }
+
+ 	building {
+ 		sprite: spriteset_temple_2_3_left;
+		zoffset: -15; 
+		zextent: 32;
+	}
+}
+
+spritelayout layout_temple_2_3_middle {
+ 	ground { sprite: spriteset_templebase; }
+
+ 	building {
+ 		sprite: spriteset_temple_2_3_middle;
+		zoffset: 1;
+	}
+}
+
+spritelayout layout_temple_2_4_right {
+ 	ground { sprite: spriteset_templebase; }
+
+ 	building {
+ 		sprite: spriteset_temple_2_4_right;
+		zoffset: -15;
+		zextent: 32;
+	}
+}
+
+spritelayout layout_temple_2_4_left {
+ 	ground { sprite: spriteset_templebase; }
+
+ 	building {
+ 		sprite: spriteset_temple_2_4_left;
+		zoffset: -15; 
+		zextent: 32;
+	}
+}
+
+spritelayout layout_temple_2_4_middle {
+ 	ground { sprite: spriteset_templebase; }
+
+ 	building {
+ 		sprite: spriteset_temple_2_4_middle;
+		zoffset: 1;
+	}
+}
+
+
+
+
+spritelayout layout_temple_2_1_purchase {
+	ground {
+        sprite: GROUNDSPRITE_NORMAL;
+	}
+	building {
+		sprite: spriteset_temple_2_1_purchase;
+		xoffset: 0; //from NE edge
+        yoffset: -16; //from NW edge
+        zoffset: -16;
+        xextent: 16;
+        yextent: 16;
+        zextent: 16;
+	}
+}
+
+spritelayout layout_temple_2_2_purchase {
+	ground {
+        sprite: GROUNDSPRITE_NORMAL;
+	}
+	building {
+		sprite: spriteset_temple_2_2_purchase;
+		xoffset: 0; //from NE edge
+        yoffset: -16; //from NW edge
+        zoffset: -16;
+        xextent: 16;
+        yextent: 16;
+        zextent: 16;
+	}
+}
+
+spritelayout layout_temple_2_3_purchase {
+	ground {
+        sprite: GROUNDSPRITE_NORMAL;
+	}
+	building {
+		sprite: spriteset_temple_2_3_purchase;
+		xoffset: 0; //from NE edge
+        yoffset: -16; //from NW edge
+        zoffset: -16;
+        xextent: 16;
+        yextent: 16;
+        zextent: 16;
+	}
+}
+
+spritelayout layout_temple_2_4_purchase {
+	ground {
+        sprite: GROUNDSPRITE_NORMAL;
+	}
+	building {
+		sprite: spriteset_temple_2_4_purchase;
+		xoffset: 0; //from NE edge
+        yoffset: -16; //from NW edge
+        zoffset: -16;
+        xextent: 16;
+        yextent: 16;
+        zextent: 16;
+	}
+}
+
+
+switch (FEAT_OBJECTS, SELF, switch_temple_2_1_position, relative_pos) {
+	relative_coord(0, 0): layout_templebase;
+	relative_coord(0, 1): layout_temple_2_1_right;
+	relative_coord(1, 0): layout_temple_2_1_left;
+	relative_coord(1, 1): layout_temple_2_1_middle;
+    layout_templebase;
+}
+	
+switch (FEAT_OBJECTS, SELF, switch_temple_2_2_position, relative_pos) {
+	relative_coord(0, 0): layout_templebase;
+	relative_coord(0, 1): layout_temple_2_2_right;
+	relative_coord(1, 0): layout_temple_2_2_left;
+	relative_coord(1, 1): layout_temple_2_2_middle;
+    layout_templebase;
+}
+	
+switch (FEAT_OBJECTS, SELF, switch_temple_2_3_position, relative_pos) {
+	relative_coord(0, 0): layout_templebase;
+	relative_coord(0, 1): layout_temple_2_3_right;
+	relative_coord(1, 0): layout_temple_2_3_left;
+	relative_coord(1, 1): layout_temple_2_3_middle;
+    layout_templebase;
+}
+	
+switch (FEAT_OBJECTS, SELF, switch_temple_2_4_position, relative_pos) {
+	relative_coord(0, 0): layout_templebase;
+	relative_coord(0, 1): layout_temple_2_4_right;
+	relative_coord(1, 0): layout_temple_2_4_left;
+	relative_coord(1, 1): layout_temple_2_4_middle;
+    layout_templebase;
+}
+
+
+
+// 4 views
+switch (FEAT_OBJECTS, SELF, switch_temple_2_view, view) {
+    1:  switch_temple_2_1_position;
+    2:  switch_temple_2_2_position;
+    3:  switch_temple_2_3_position;
+    switch_temple_2_4_position;
+}
+
+
+
+// sprite for purchase menu
+switch (FEAT_OBJECTS, SELF, switch_temple_2_purchase, view) {
+    1:  layout_temple_2_1_purchase;
+    2:  layout_temple_2_2_purchase;
+    3:  layout_temple_2_3_purchase;
+    layout_temple_2_4_purchase;
+}
+
+
+
+
+
+
+item (FEAT_OBJECTS, temple_2) {
+    property {
+        class:                  "BLDG";
+//        classname:              string(STR_HISTORIC_2X2);
+        name:                   string(STR_TEMPLE_2);
+        climates_available:     ALL_CLIMATES;
+        size:                   [2,2];
+        build_cost_multiplier:  80;
+        remove_cost_multiplier: 100;
+        introduction_date:      0x00000000;
+        end_of_life_date:       0xFFFFFFFF;
+//        object_flags:           bitmask(OBJ_FLAG_REMOVE_IS_INCOME);
+        height:                 8;
+        num_views:              4;
+    }
+    graphics {
+		default: switch_temple_2_view;
+		purchase: switch_temple_2_purchase;
+        additional_text:    string(STR_TEMPLE_2);
+    }
+}
+
+
+

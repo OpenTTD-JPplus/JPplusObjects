@@ -1,0 +1,46 @@
+##grflangid 0x01
+
+lang: 7F
+
+STR_GRF_NAME :Japanese Secret Objects 0.3
+STR_GRF_DESCRIPTION :An object set by Emperor Jake. Other credits: Azusa, the JapanSet Team, GPLv2+.
+
+
+STR_SMOKESTACKS				:Smokestacks
+
+STR_INDUSTRIAL				:Japanese Secret Objects
+STR_FACTORY					:Electronics Factory
+STR_SMOKESTACK_1			:Concrete Smokestack
+STR_SMOKESTACK_2			:Gas Power Station Smokestack
+STR_SMOKESTACK_3			:Lattice Smokestack
+
+STR_LIGHT_INDUSTRY			:Industrial Tiles
+STR_LIGHT_INDUSTRY_YARD		:Industrial Yard
+STR_LIGHT_INDUSTRY_SHED		:Industrial Sheds
+
+STR_LARGE_BUILDING			:2x2 Modern Japanese Buildings
+STR_LARGE_HISTORIC			:2x2 Historical Japanese Buildings
+
+STR_CASTLE_1				:Japanese Castle
+STR_CASTLE_2				:Castle 2
+STR_TEMPLE_1				:Buddhist Temple
+STR_TEMPLE_2				:Shinto Shrine
+
+STR_SHOP					:Shopping Centre
+STR_STADIUM					:Baseball Stadium
+STR_TOWER					:Pearl Tower
+
+STR_HIST					:Historical Japanese Buildings
+
+STR_SHRINES					:Shrines & Statues
+
+STR_SHRINE01_PURCHASE		:Shrine 1 
+STR_SHRINE02_PURCHASE		:Shrine 2 
+STR_SHRINE03_PURCHASE		:Shrine 3 
+STR_STATUE					:Statue of Buddha
+
+STR_GROUND					:Ground Tiles
+STR_GROUND_ASPHALT			:Asphalt Ground
+STR_GROUND_TEMPLE			:Temple Ground
+STR_GROUND_URBAN			:Urban Ground
+STR_GROUND_INDUSTRY			:Industry Ground
