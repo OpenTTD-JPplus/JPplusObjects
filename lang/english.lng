@@ -8,7 +8,8 @@ STR_GRF_DESCRIPTION :An object set by Emperor Jake. Other credits: Azusa, Toni B
 
 STR_SMOKESTACKS				:Smokestacks
 
-STR_INDUSTRIAL				:Japanese Secret Objects
+STR_INDUSTRIAL				:JP+ Japanese Objects
+
 STR_FACTORY					:Electronics Factory
 STR_SMOKESTACK_1			:Concrete Smokestack
 STR_SMOKESTACK_2			:Gas Power Station Smokestack
