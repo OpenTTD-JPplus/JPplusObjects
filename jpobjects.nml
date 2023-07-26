@@ -1051,7 +1051,7 @@ spritelayout spritelayout_shrine03_green {
 
 spritelayout spritelayout_shrine03_purchase {
     ground {
-        sprite: GROUNDSPRITE_NORMAL;
+        sprite: spriteset_firsbase;
     }
     building {
         sprite: spriteset_shrine03_green(0);
